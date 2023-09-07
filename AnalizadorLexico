@@ -10,7 +10,29 @@ import ply.lex as lex
 # es decir r'\n' seria un \ seguido de n (no se interpretaria como salto de linea) 
 
 # List of token names.   This is always required
-
+reserved = {
+    'entero'    :  'TIPO_ENTERO',
+    'decimal'   :  'TIPO_DECIMAL',
+    'bool'      :  'TIPO_BOOLEANO',
+    'caracter'  :  'TIPO_CARACTER',
+    'cadena'    :  'TIPO_CADENA',
+    'booleano'  :  'TIPO_BOOLEANO',
+    'si'        :  'SI',
+    'sino'      :  'SINO',
+    'mientras'  :  'MIENTRAS',
+    'para'      :  'PARA',
+    'hacer'     :  'HACER',
+    'desde'     :  'desde',
+    'hasta'     :  'HASTA',
+    'funcion'   :  'FUNCION',
+    'retorno'   :  'RETORNO',
+    'verdadero' :  'VERDADERO',
+    'falso'     :  'FALSO',
+    'principal' :  'PRINCIPAL',
+    'romper'    :  'ROMPER',
+    'entrada'   :  'ENTRADA',
+    'salida'    :  'SALIDA',
+}
 tokens = (
     'NUMERO',
     'IDENTIFICADOR',
@@ -48,11 +70,11 @@ tokens = (
  
  # Regular expression rules for simple tokens
 
-t_IDENTIFICADOR = r'[a-zA-Z_][a-zA-Z0-9_]*'
+#t_IDENTIFICADOR = r'[a-zA-Z_][a-zA-Z0-9_]*'
 #t_CADENA = r'""'
 t_ESPACIO = r'\s+'
-t_INICOMENTARIO = r'/*'
-t_FINCOMENTARIO = r'*/'
+#t_INICOMENTARIO = r'/*'
+#t_FINCOMENTARIO = r'*/'
 #t_GUIONES = r'-_'
 t_PUNTO = r'\.'
 t_COMA = r','
@@ -70,16 +92,46 @@ t_DLLAVE = r'\}'
 #t_NUMBER  = r'\d+'
  
  # A regular expression rule with some action code
+def find_column(input_text, token):
+    last_cr = input_text.rfind('\n', 0, token.lexpos)
+    if last_cr < 0:
+        last_cr = 0
+    column = (token.lexpos - last_cr) + 1
+    return column
+
+def t_IDENTIFICADOR(t):
+    r'[a-zA-Z_]+ ( [a-zA-Z0-9_]* )'
+    t.type = reserved.get(t.value, 'IDENTIFICADOR')  # Check for reserved words
+    token = {
+        'type': t.type,
+        'lexeme': t.value,
+        'line': t.lineno,
+        'column': find_column(data, t)
+    }
+    tokens.append(token)  # Usa append en la lista
+    return t
+  
+def t_CADENA(t):
+    r'"([^"])*"'
+    return t
 
 def t_NUMERO(t):
     r'\d+'
     t.value = int(t.value)  # guardamos el valor del lexema  
     #print("se reconocio el numero")
     return t
-  
- #def t_IDENTIFICADOR(t):
-  #r'[a-zA-Z_]+([a-zA-Z0-9_]*)'
- #  return t
+def t_INICOMENTARIO(t):
+    r'/\*'
+    pass  # Ignorar el inicio del comentario multilineal
+
+def t_FINCOMENTARIO(t):
+    r'\*/'
+    pass  # Ignorar el fin del comentario multilineal
+
+def t_COMENTARIO(t):
+    r'//.*'
+    pass  # Ignorar comentarios de una sola línea
+
  # Define a rule so we can track line numbers
 def t_newline(t):
     r'\n+'
@@ -98,7 +150,7 @@ lexer = lex.lex()
 
 # Test it out
 data = ''' 2+3*  , 4(2-3) .  
- i /* */'''
+ i "Hola mundo"'''
 
  
 # Give the lexer some input
@@ -109,5 +161,4 @@ while True:
     tok = lexer.token()
     if not tok: 
         break      # No more input
-    #print(tok)
-    print(tok.type, tok.value, tok.lineno, tok.lexpos)
+    print(f'Type: {tok.type}, Lexema: {tok.value}, Line: {tok.lineno}, Column: {find_column(data, tok)}')
