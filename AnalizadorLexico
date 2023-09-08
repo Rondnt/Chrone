@@ -194,4 +194,4 @@ with open("code4.txt", "r") as archivo:
 
 # Imprimir la lista de tokens
 for token_info in tokens_list:
-    print(f'Type: {token_info["Type"]}, Lexema: {token_info["Lexema"]}, Linea: {token_info["Linea"]}, Columna: {token_info["Columna"]}')
+    print(f'Type: {token_info["Type"]}, Lexem: {token_info["Lexema"]}, Line: {token_info["Linea"]}, Column: {token_info["Columna"]}')
