@@ -1,0 +1,10 @@
+funcion principal() {
+    entero contador = 1;
+    
+    mientras (contador <= 5) {
+        imprimir << "Número: " << contador;
+        contador = contador + 1;
+    }
+    
+    retorno 0;
+}
