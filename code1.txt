@@ -1,0 +1,4 @@
+funcion principal() {
+    imprimir << "Hola, mundo!";
+    retorno 0;
+}
