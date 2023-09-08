@@ -1,0 +1,32 @@
+funcion factorial(entero num) {
+    si (num <= 1) {
+        retorno 1;
+    }
+    otra_si (num < 0) {
+        imprimir << "No se puede calcular el factorial de un número negativo.";
+        retorno -1;
+    }
+    otra {
+        entero resultado = 1;
+        mientras (num > 1) {
+            resultado = resultado * num;
+            num = num - 1;
+        }
+        retorno resultado;
+    }
+}
+
+funcion principal() {
+    entero num = 5;
+    
+    imprimir << "Ingrese un número para calcular su factorial: ";
+    leer >> num;
+    
+    entero resultado_factorial = factorial(num);
+    
+    si (resultado_factorial != -1) {
+        imprimir << "El factorial de " << num << " es igual a " << resultado_factorial;
+    }
+    
+    retorno 0;
+}
