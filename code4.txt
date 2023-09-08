@@ -1,0 +1,15 @@
+funcion suma(entero num1, entero num2) {
+    entero resultado = num1 + num2;
+    retorno resultado;
+}
+
+funcion principal() {
+    entero num1 = 5;
+    entero num2 = 7;
+    
+    entero resultado_suma = suma(num1, num2);
+    
+    imprimir << "La suma de " << num1 << " y " << num2 << " es igual a " << resultado_suma;
+    
+    retorno 0;
+}
