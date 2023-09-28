@@ -1,20 +1,20 @@
 import pandas as pd
 
-class node_stack:
-  def __init__(self, symbol, lexeme):
-    global count
-    self.symbol = symbol
-    self.lexeme = lexeme
-    self.id = count + 1
-    count += 1
+class NodeStack:
+    def __init__(self, symbol, lexeme):
+        global count
+        self.symbol = symbol
+        self.lexeme = lexeme
+        self.id = count + 1
+        count += 1
 
-class node_tree:
-  def __init__(self, id, symbol, lexeme):
-    self.id = id
-    self.symbol = symbol
-    self.lexeme = lexeme
-    self.children = []
-    self.father = None
+class NodeTree:
+    def __init__(self, id, symbol, lexeme):
+        self.id = id
+        self.symbol = symbol
+        self.lexeme = lexeme
+        self.children = []
+        self.father = None
 
 def buscar_node(id, node):
     if node.id == id:
@@ -25,19 +25,19 @@ def buscar_node(id, node):
             return result
     return None
 
-#Cargar tabla CSV
-tabla = pd.read_csv("tabla.csv", index_col = 0)
+# Cargar la tabla CSV
+tabla = pd.read_csv("tabla.csv", index_col=0)
 count = 0
 stack = []
 
-# inicializar pila
-symbol_E = node_stack('E', None)
-symbol_dollar = node_stack('$', None)
+# Inicializar la pila
+symbol_E = NodeStack('E', None)
+symbol_dollar = NodeStack('$', None)
 stack.append(symbol_dollar)
 stack.append(symbol_E)
 
-# inicializar arbol sintactico
-root = node_tree(symbol_E.id, symbol_E.symbol, symbol_E.lexeme)
+# Inicializar el árbol sintáctico
+root = NodeTree(symbol_E.id, symbol_E.symbol, symbol_E.lexeme)
 
 input = [
     {"symbol": "int", "lexeme": "4", "nroline": 2, "col": 2},
