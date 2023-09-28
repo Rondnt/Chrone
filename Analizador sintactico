@@ -24,18 +24,18 @@ def buscar_node(id, node):
         if result:
             return result
     return None
-
+#Cargar tabla CSV
 tabla = pd.read_csv("tabla.csv", index_col = 0)
 count = 0
 stack = []
 
-# init stack
+# inicializar pila
 symbol_E = node_stack('E', None)
 symbol_dollar = node_stack('$', None)
 stack.append(symbol_dollar)
 stack.append(symbol_E)
 
-# init tree
+# inicializar arbol 
 root = node_tree(symbol_E.id, symbol_E.symbol, symbol_E.lexeme)
 
 input = [ 
