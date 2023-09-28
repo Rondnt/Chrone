@@ -71,3 +71,50 @@ def imprimir_arbol(node, nivel=0):
         for child in node.children:
             imprimir_arbol(child, nivel + 1)
 
+# Analizador sintáctico LL(1)
+while stack:
+    # Obtener el símbolo superior de la pila y el símbolo de entrada actual
+    top_of_stack = stack[-1]
+    current_input = input[0]
+
+    if top_of_stack.symbol == current_input["symbol"]:
+        # Coincidencia, avanzar en la pila y la entrada
+        stack.pop()
+        input.pop(0)
+        cadena_procesada_list.append(current_input["lexeme"])
+        # Solo agregar cuando haya coincidencia
+    else:
+        # Obtener la producción desde la tabla de análisis sintáctico
+        production = obtener_produccion(current_input["symbol"], top_of_stack.symbol)
+
+        if production is None:
+            print("Cadena no aceptada")
+            break
+
+        # Reemplazar la producción en la pila
+        stack.pop()
+        production_symbols = production.split()
+        production_symbols.reverse()
+        for symbol in production_symbols:
+            if symbol != 'e':
+                new_node = NodeStack(symbol, current_input["lexeme"])
+                stack.append(new_node)
+
+                # Crear el nodo en el árbol sintáctico
+                new_node_tree = NodeTree(new_node.id, new_node.symbol, new_node.lexeme)
+                father = buscar_node(top_of_stack.id, root)
+                father.children.append(new_node_tree)
+                new_node_tree.father = father
+
+# Si la pila está vacía y la entrada también, la cadena es aceptada
+if not stack and not input:
+    cadena_procesada_str = " ".join(cadena_procesada_list)
+    print("Cadena procesada:", cadena_procesada_str)
+    print("La cadena si es aceptada")
+elif stack or input:
+    print("La cadena no es aceptada")
+
+# Imprimir el árbol sintáctico si es aceptada
+if not stack and not input:
+    print("Árbol sintáctico:")
+    imprimir_arbol(root)
