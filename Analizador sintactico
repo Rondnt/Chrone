@@ -54,6 +54,22 @@ input = [
   
 ]
 
+# Mantener un registro de la cadena procesada como una lista
+cadena_procesada_list = []
+
+# Función para obtener la producción de la tabla de análisis sintáctico
+def obtener_produccion(terminal, no_terminal):
+    try:
+        return tabla.loc[no_terminal, terminal]
+    except KeyError:
+        return None
+
+# Función para imprimir el árbol sintáctico
+def imprimir_arbol(node, nivel=0):
+    if node:
+        print("  " * nivel + node.symbol)
+        for child in node.children:
+            imprimir_arbol(child, nivel + 1)
 production = tabla.loc[stack[-1].symbol, input[0]["symbol"]]
 print(production)
 # reemplazar production (T X) en stack
