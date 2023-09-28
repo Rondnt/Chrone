@@ -38,12 +38,21 @@ stack.append(symbol_E)
 # inicializar arbol 
 root = node_tree(symbol_E.id, symbol_E.symbol, symbol_E.lexeme)
 
-input = [ 
-          {"symbol":"int", "lexeme":"4", "nroline":2, "col":2},
-          {"symbol":"*", "lexeme":"*", "nroline":2, "col":4},
-          {"symbol":"int", "lexeme":"5", "nroline":2, "col":6},
-          {"symbol":"$", "lexeme":"$", "nroline":0, "col":0},
-        ]
+input = [
+    {"symbol": "int", "lexeme": "4", "nroline": 2, "col": 2},
+    {"symbol": "*", "lexeme": "*", "nroline": 2, "col": 4},
+    {"symbol": "int", "lexeme": "5", "nroline": 2, "col": 6},
+    {"symbol": "$", "lexeme": "$", "nroline": 0, "col": 0},
+   #{"symbol": "int", "lexeme": "4", "nroline": 2, "col": 2},
+   #{"symbol": "*", "lexeme": "*", "nroline": 2, "col": 4},
+   #{"symbol": "(", "lexeme": "(", "nroline": 2, "col": 6},
+   #{"symbol": "int", "lexeme": "5", "nroline": 2, "col": 8},
+   #{"symbol": "+", "lexeme": "*", "nroline": 2, "col": 10},
+   #{"symbol": "int", "lexeme": "6", "nroline": 2, "col": 12},
+   #{"symbol": ")", "lexeme": ")", "nroline": 2, "col": 14},
+   #{"symbol": "$", "lexeme": "$", "nroline": 0, "col": 0},
+  
+]
 
 production = tabla.loc[stack[-1].symbol, input[0]["symbol"]]
 print(production)
