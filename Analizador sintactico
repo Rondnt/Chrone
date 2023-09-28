@@ -70,22 +70,4 @@ def imprimir_arbol(node, nivel=0):
         print("  " * nivel + node.symbol)
         for child in node.children:
             imprimir_arbol(child, nivel + 1)
-production = tabla.loc[stack[-1].symbol, input[0]["symbol"]]
-print(production)
-# reemplazar production (T X) en stack
-# pop de stack
-node_p = stack.pop()
-# push de X y luego T en stack
-node_X = node_stack("X", "X")
-node_T = node_stack("T", "T")
-stack.append(node_X)
-stack.append(node_T)
 
-# crear los hijo X y T de E
-node_X_tree = node_tree(node_X.id, node_X.symbol, node_X.lexeme)
-node_T_tree = node_tree(node_T.id, node_T.symbol, node_T.lexeme)
-node_father = buscar_node(node_p.id)
-node_father.children.append(node_X_tree)
-node_father.children.append(node_T_tree)
-node_X_tree.father = node_father
-node_T_tree.father = node_father
