@@ -24,6 +24,7 @@ def buscar_node(id, node):
         if result:
             return result
     return None
+
 #Cargar tabla CSV
 tabla = pd.read_csv("tabla.csv", index_col = 0)
 count = 0
@@ -35,7 +36,7 @@ symbol_dollar = node_stack('$', None)
 stack.append(symbol_dollar)
 stack.append(symbol_E)
 
-# inicializar arbol 
+# inicializar arbol sintactico
 root = node_tree(symbol_E.id, symbol_E.symbol, symbol_E.lexeme)
 
 input = [
