@@ -16,6 +16,15 @@ class node_tree:
     self.children = []
     self.father = None
 
+def buscar_node(id, node):
+    if node.id == id:
+        return node
+    for child in node.children:
+        result = buscar_node(id, child)
+        if result:
+            return result
+    return None
+
 tabla = pd.read_csv("tabla.csv", index_col = 0)
 count = 0
 stack = []
