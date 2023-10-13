@@ -5,13 +5,14 @@
 # numbers and +,-,*,/
 # ------------------------------------------------------------
 import ply.lex as lex
+from sin import analizador_sintactico
 
 # r'atring' -> r significa que la cadena es tradada sin caracteres de escape, 
 # es decir r'\n' seria un \ seguido de n (no se interpretaria como salto de linea) 
 
-# List of token names.   This is always required
+ # List of token names.   This is always required
 reserved = {
-    'entero'    :  'TIPO_ENTERO',
+    'entero'    :  'TIPOENTERO',
     'decimal'   :  'TIPO_DECIMAL',
     'caracter'  :  'TIPO_CARACTER',
     'cadena'    :  'TIPO_CADENA',
@@ -34,6 +35,7 @@ reserved = {
     'imprimir'  :  'IMPRIMIR',
     'leer'      :  'LEER',
 }
+
 tokens = [
     'NUMERO',
     'IDENTIFICADOR',
@@ -67,7 +69,7 @@ tokens = [
     'DLLAVE',
     'FINSENTENCIA',
 ] + list(reserved.values())
- 
+
  # Regular expression rules for simple tokens
 
 #t_IDENTIFICADOR = r'[a-zA-Z_][a-zA-Z0-9_]*'
@@ -95,8 +97,8 @@ t_ILLAVE = r'\{'
 t_DLLAVE = r'\}'
 t_FINSENTENCIA = r';'
 #t_NUMBER  = r'\d+'
- 
-# A regular expression rule with some action code
+
+ # A regular expression rule with some action code
 def find_column(input_text, token):
     last_cr = input_text.rfind('\n', 0, token.lexpos)
     if last_cr < 0:
@@ -108,7 +110,7 @@ def t_IDENTIFICADOR(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
     t.type = reserved.get(t.value, 'IDENTIFICADOR')  # Check for reserved words
     return t
-  
+
 def t_CADENA(t):
     r'"([^"])*"'
     return t
@@ -118,17 +120,17 @@ def t_NUMERO(t):
     t.value = int(t.value)  # guardamos el valor del lexema  
     #print("se reconocio el numero")
     return t
-  
+
 def t_ENTERO(t):
     r'[1-9][0-9]*|0'
     t.value = int(t.value)
     return t
-  
+
 def t_DECIMAL(t):
     r'[0-9]+\.[0-9]+'
     t.value = float(t.value)
     return t
-  
+
 def t_TIPO_ENTERO(t):
     r'entero'
     t.type = reserved['entero']
@@ -143,7 +145,7 @@ def t_COMENTMULT(t):
     r'/\*[^*]*\*+(?:[^/*][^*]*\*+)*/'
     t.value = t.value  # Establece el tipo de token como 'COMENTMULT'
     return t
-  
+
 def t_COMENTARIO(t):
     r'//.*'
     t.value = t.value  # Ignorar comentarios de una sola línea
@@ -161,37 +163,45 @@ def t_GUIONES(t):
 def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
- 
+
  # A string containing ignored characters (spaces and tabs)
 t_ignore  = ' \t'
- 
+
  # Error handling rule
 def t_error(t):
     print("Illegal character '%s'" % t.value[0])
     t.lexer.skip(1)
- 
+
 # Build the lexer
 lexer = lex.lex()
 
 tokens_list = []
 
 # Leer ejemplos de código fuente desde un archivo
-with open("code4.txt", "r") as archivo:
+with open("ex1.txt", "r") as archivo:
     for linea in archivo:
         lexer.input(linea)
         while True:
             tok = lexer.token()
             if not tok:
                 break
+            print(tok)  # Imprime cada token a medida que se genera
             # Agregar el token a la lista como un diccionario
             token_info = {
-                'Type': tok.type,
-                'Lexema': tok.value,
-                'Linea': tok.lineno,
-                'Columna': find_column(linea, tok)
+                'symbol': tok.type,
+                'lexeme': tok.value,
+                'nroline': tok.lineno,
+                'col': find_column(linea, tok)
             }
             tokens_list.append(token_info)
 
-# Imprimir la lista de tokens
-for token_info in tokens_list:
-    print(f'Type: {token_info["Type"]}, Lexem: {token_info["Lexema"]}, Line: {token_info["Linea"]}, Column: {token_info["Columna"]}')
+# Después de llenar tokens_list
+if not tokens_list:
+    print("La lista de tokens está vacía.")
+else:
+    print("La lista de tokens no está vacía.")
+    # Imprimir la lista de tokens
+    for token_info in tokens_list:
+        print(f'Symbol: {token_info["symbol"]}, Lexem: {token_info["lexeme"]}, Line: {token_info["nroline"]} Column: {token_info["col"]}')
+
+analizador_sintactico(tokens_list)
