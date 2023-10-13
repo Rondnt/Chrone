@@ -91,9 +91,9 @@ def analizador_sintactico(tokens_list):
 
       # Si la pila está vacía y la entrada también, la cadena es aceptada
       if not stack and not tokens_list:
-        print("La cadena es aceptada")
+        print("La cadena no es aceptada")
       else:
-        print("La cadena no es aceptada: la entrada y/o la pila no están vacías")
+        print("La cadena es aceptada")
 
     # Convertir el árbol en un árbol espejo antes de imprimirlo
       root = convertir_arbol_espejo(root)
