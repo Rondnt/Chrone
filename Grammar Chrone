@@ -1,0 +1,60 @@
+PROGRAMA  -> principal iparen dparen ILLAVE SENTENCES DLLAVE FUNCIONES
+FUNCIONES -> FUNCCION FUNCIONES
+FUNCIONES -> ''
+
+FUNCCION -> funcion TPVAR id iparen PARAMS dparen ILLAVE SENTENCES DLLAVE
+
+PARAMS -> TPVAR id PARAMS_2
+PARAMS -> ''
+PARAMS_2  -> coma TPVAR id PARAMS_2
+PARAMS_2  -> ''
+
+
+SENTENCES   -> SENTENCE SENTENCES
+SENTENCES   -> ''
+SENTENCE    -> DECLARACION
+DECLARACION -> TPVAR id ASIGNAR finsentencia
+ASIGNAR     -> asignacion E
+ASIGNAR     -> ''
+
+SENTENCE    ->  IMPRIMIR SALIDA E finsentencia
+SENTENCE    -> IF_ELSE
+
+IF_ELSE     -> SI iparen E dparen ILLAVE SENTENCES DLLAVE ELSE
+ELSE        -> SINO ILLAVE SENTENCES DLLAVE
+ELSE        -> ''
+
+E           -> T E' 
+E'          -> OPER T E' 
+E'          -> ''
+T           -> TERM 
+T           -> iparen E dparen
+
+TERM        -> id TERM_FUNC
+TERM        -> num
+TERM        -> boolean
+TERM_FUNC   -> iparen PARAM_M dparen
+TERM_FUNC   -> ''
+OPER        -> suma
+OPER        -> mult
+OPER        -> div
+OPER        -> y
+OPER        -> o
+OPER        -> mayor
+OPER        -> menor
+OPER        -> igual
+OPER        -> mayorigual
+OPER        -> menorigual
+
+PARAM_M     -> E PARAM_E
+PARAM_M     -> ''
+PARAM_E     -> coma E PARAM_E
+PARAM_E     -> ''
+
+TPVAR -> NUMERO
+TPVAR -> DECIMAL
+TPVAR -> BOOLEANO
+TPVAR -> CADENA
+
+
+// principal iparen dparen ILLAVE IMPRIMIR SALIDA id finsentencia DLLAVE funcion NUMERO id iparen NUMERO id coma NUMERO id dparen ILLAVE IMPRIMIR SALIDA id finsentencia SI iparen id mayor num dparen ILLAVE IMPRIMIR SALIDA id finsentencia DLLAVE DLLAVE
