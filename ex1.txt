@@ -1,7 +1,12 @@
 principal() { 
             entero a = 8;
             entero b = 9;
-            imprimir << 8 + 9;
+            entero resultado = suma(a,b);
+            retornar 0;
             }
 funcion entero suma (entero a, entero b) {
+            entero resultado = a + b;
+            retornar resultado;
             }
+
+        
