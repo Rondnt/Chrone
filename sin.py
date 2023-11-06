@@ -1,4 +1,17 @@
 import pandas as pd
+import numpy as np
+
+class Token:
+    def __init__(self, symbol, lexeme, nroline, col):
+        self.symbol = symbol
+        self.lexeme = lexeme
+        self.nroline = nroline
+        self.col = col
+
+        if pd.isnull(self.nroline):
+            self.nroline = np.NaN
+        if pd.isnull(self.col):
+            self.col = np.NaN
 
 class NodeStack:
     def __init__(self, symbol, lexeme):
@@ -60,14 +73,14 @@ def analizador_sintactico(tokens_list):
         top_of_stack = stack[-1]
         current_input = tokens_list[0]
 
-        if top_of_stack.symbol == current_input["symbol"]:
+        if top_of_stack.symbol == current_input['symbol']:
             # Coincidencia, avanzar en la pila y la entrada
             stack.pop()
             tokens_list.pop(0)
         else:
             try:
                 # Obtener la producción desde la tabla de análisis sintáctico
-                production = tabla.loc[top_of_stack.symbol, current_input["symbol"]]
+                production = tabla.loc[top_of_stack.symbol, current_input['symbol']]
             except KeyError:
                 print(f"Error sintáctico: No se encontró una regla para {top_of_stack.symbol} y {current_input['symbol']}")
                 return
@@ -83,11 +96,11 @@ def analizador_sintactico(tokens_list):
                 production_symbols.reverse()
                 for symbol in production_symbols:
                     if symbol != 'e':
-                        new_node = NodeStack(symbol, current_input["lexeme"])
+                        new_node = NodeStack(symbol, current_input['lexeme'])
                         stack.append(new_node)
 
                         # Crear el nodo en el árbol sintáctico
-                        new_node_tree = NodeTree(new_node.id, new_node.symbol, new_node.lexeme, current_input["nroline"], current_input["col"])
+                        new_node_tree = NodeTree(new_node.id, new_node.symbol, new_node.lexeme, current_input['nroline'], current_input['col'])
                         father = buscar_node(top_of_stack.id, root)
                         father.children.append(new_node_tree)
                         new_node_tree.father = father
