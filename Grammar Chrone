@@ -13,9 +13,11 @@ PARAMS_2  -> ''
 SENTENCES   -> SENTENCE SENTENCES
 SENTENCES   -> ''
 SENTENCE    -> DECLARACION
-DECLARACION -> TPVAR id ASIGNAR finsentencia
+DECLARACION -> TPVAR id ASIGNAR finsentencia R
 ASIGNAR     -> asignacion E
 ASIGNAR     -> ''
+R           -> ''
+R           -> retornar E finsentencia
 
 SENTENCE    ->  IMPRIMIR SALIDA E finsentencia
 SENTENCE    -> IF_ELSE
@@ -31,30 +33,32 @@ T           -> TERM
 T           -> iparen E dparen
 
 TERM        -> id TERM_FUNC
-TERM        -> num
-TERM        -> boolean
+TERM        -> ENTERO
+TERM        -> BOOLEANO
+TERM        -> CADENA
+TERM        -> DECIMAL
 TERM_FUNC   -> iparen PARAM_M dparen
 TERM_FUNC   -> ''
 OPER        -> suma
+OPER        -> resta
 OPER        -> mult
 OPER        -> div
 OPER        -> y
 OPER        -> o
 OPER        -> mayor
 OPER        -> menor
-OPER        -> igual
+OPER        -> asignacion
 OPER        -> mayorigual
 OPER        -> menorigual
+OPER        -> comparar
+
 
 PARAM_M     -> E PARAM_E
 PARAM_M     -> ''
 PARAM_E     -> coma E PARAM_E
 PARAM_E     -> ''
 
-TPVAR -> NUMERO
-TPVAR -> DECIMAL
-TPVAR -> BOOLEANO
-TPVAR -> CADENA
-
-
-// principal iparen dparen ILLAVE IMPRIMIR SALIDA id finsentencia DLLAVE funcion NUMERO id iparen NUMERO id coma NUMERO id dparen ILLAVE IMPRIMIR SALIDA id finsentencia SI iparen id mayor num dparen ILLAVE IMPRIMIR SALIDA id finsentencia DLLAVE DLLAVE
+TPVAR -> TIPOENTERO
+TPVAR -> TIPODECIMAL
+TPVAR -> TIPOBOOLEANO
+TPVAR -> TIPOCADENA
