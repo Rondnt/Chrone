@@ -10,91 +10,92 @@ from sin import analizador_sintactico
 
  # List of token names.   This is always required
 reserved = {
-    'entero'    :  'tipoentero',
+    'NUMERO'    :  'TIPONUMERO',
     'decimal'   :  'TIPODECIMAL',
     'caracter'  :  'TIPOCARACTER',
     'cadena'    :  'TIPOCADENA',
-    'booleano'  :  'TIPObooleano',
-    'si'        :  'si',
-    'sino'      :  'sino',
+    'booleano'  :  'TIPOBOOLEANO',
+    'si'        :  'SI',
+    'sino'      :  'SINO',
     'mientras'  :  'MIENTRAS',
     'para'      :  'PARA',
     'hacer'     :  'HACER',
     'desde'     :  'desde',
     'hasta'     :  'HASTA',
-    'funcion'   :  'funcion',
+    'funcion'   :  'FUNCION',
     'retorno'   :  'RETORNO',
     'verdadero' :  'VERDADERO',
     'falso'     :  'FALSO',
-    'principal' :  'principal',
+    'principal' :  'PRINCIPAL',
     'romper'    :  'ROMPER',
     'entrada'   :  'ENTRADA',
-    #'salida'    :  'salida',
-    'imprimir'  :  'imprimir',
+    #'salida'    :  'SALIDA',
+    'imprimir'  :  'IMPRIMIR',
     'leer'      :  'LEER',
 }
 
 tokens = [
-    'entero',
-    'salida',
-    'id',
-    'cadena',
-    'caracter',
-    'espacio',
+    'NUMERO',
+    'SALIDA',
+    'ID',
+    'CADENA',
+    'CARACTER',
+    'ESPACIO',
     'COMENTMULT',
     'COMENTARIO',
-    'guiones',
-    'punto',
-    'coma',
-    'decimal',
-    'booleano',
+    'GUIONES',
+    'PUNTO',
+    'COMA',
+    'ENTERO',
+    'DECIMAL',
+    'BOOLEANO',
     'suma',
     'funcion',
-    'resta',
-    'mult',
-    'div',
+    'RESTA',
+    'MULT',
+    'DIV',
     'asignacion',
-    'menor',
-    'mayor',
+    'MENOR',
+    'MAYOR',
     'MODULO',
-    'mayorigual',
-    'menorigual',
-    'comparar',
+    'MAYORIGUAL',
+    'MENORIGUAL',
+    'COMPARAR',
     'NEGACION',
     'DISTINTO',
-    'iparen',
-    'dparen',
-    'illave',
-    'dllave',
+    'IPAREN',
+    'DPAREN',
+    'ILLAVE',
+    'DLLAVE',
     'finsentencia',
 ] + list(reserved.values())
 
  # Regular expression rules for simple tokens
 
-#t_idENTIFICADOR = r'[a-zA-Z_][a-zA-Z0-9_]*'
-t_espacio = r'\s+'
-#t_principal = r'principal'
-t_punto = r'\.'
-t_coma = r','
+#t_IDENTIFICADOR = r'[a-zA-Z_][a-zA-Z0-9_]*'
+t_ESPACIO = r'\s+'
+t_PRINCIPAL = r'principal'
+t_PUNTO = r'\.'
+t_COMA = r','
 t_suma    = r'\+'
-t_resta   = r'-'
-t_mult   = r'\*'
-t_div  = r'/'
+t_RESTA   = r'-'
+t_MULT   = r'\*'
+t_DIV  = r'/'
 t_asignacion = r'='
-t_salida = r'<<'
+t_SALIDA = r'<<'
 t_ENTRADA = r'>>'
-t_menor = r'<'
-t_mayor = r'>'
+t_MENOR = r'<'
+t_MAYOR = r'>'
 t_MODULO = r'%'
-t_mayorigual = r'>='
-t_menorigual = r'<='
-t_comparar = r'=='
+t_MAYORIGUAL = r'>='
+t_MENORIGUAL = r'<='
+t_COMPARAR = r'=='
 t_NEGACION = r'!='
 t_DISTINTO = r'!'
-t_iparen  = r'\('
-t_dparen  = r'\)'
-t_illave = r'\{'
-t_dllave = r'\}'
+t_IPAREN  = r'\('
+t_DPAREN  = r'\)'
+t_ILLAVE = r'\{'
+t_DLLAVE = r'\}'
 t_finsentencia = r';'
 #t_NUMBER  = r'\d+'
 
@@ -106,29 +107,39 @@ def find_column(input_text, token):
     column = (token.lexpos - last_cr) + 1
     return column
 
-def t_id(t):
+def t_ID(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
-    t.type = reserved.get(t.value, 'id')  # Check for reserved words
+    t.type = reserved.get(t.value, 'ID')  # Check for reserved words
     return t
 
-def t_cadena(t):
+def t_CADENA(t):
     r'"([^"])*"'
     return t
 
-def t_entero(t):
+def t_NUMERO(t):
     r'\d+'
     t.value = int(t.value)  # guardamos el valor del lexema  
-    #print("se reconocio el entero")
+    #print("se reconocio el numero")
     return t
 
-def t_decimal(t):
+def t_ENTERO(t):
+    r'[1-9][0-9]*|0'
+    t.value = int(t.value)
+    return t
+
+def t_DECIMAL(t):
     r'[0-9]+\.[0-9]+'
     t.value = float(t.value)
     return t
 
-def t_TIPODECIMAL(t):
+def t_TIPO_ENTERO(t):
+    r'entero'
+    t.type = reserved['entero']
+    return t
+
+def t_TIPO_DECIMAL(t):
     r'decimal'
-    t.type = reserved.get(t.value, 'TIPODECIMAL')
+    t.type = reserved.get(t.value, 'TIPO_DECIMAL')
     return t
 
 def t_COMENTMULT(t):
@@ -141,12 +152,12 @@ def t_COMENTARIO(t):
     t.value = t.value  # Ignorar comentarios de una sola línea
     return t
 
-def t_caracter(t):
+def t_CARACTER(t):
     r"'.'"
     return t
 
 # Regla para guiones
-def t_guiones(t):
+def t_GUIONES(t):
     r'--'
     return t
  # Define a rule so we can track line numbers
@@ -191,7 +202,7 @@ def main():
       print("La lista de tokens está vacía.")
   else:
       print("La lista de tokens no está vacía.")
-      # imprimir la lista de tokens
+      # Imprimir la lista de tokens
       for token_info in tokens_list:
           print(f'Symbol: {token_info["symbol"]}, Lexem: {token_info["lexeme"]}, Line: {token_info["nroline"]} Column: {token_info["col"]}')
 
