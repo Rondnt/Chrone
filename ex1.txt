@@ -1,0 +1,7 @@
+principal() { 
+            entero a = 8;
+            entero b = 9;
+            imprimir << 8 + 9;
+            }
+funcion entero suma (entero a, entero b) {
+            }
