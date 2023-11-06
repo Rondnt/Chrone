@@ -36,7 +36,7 @@ def convertir_arbol_espejo(nodo):
       return nodo 
 
   # Cargar la tabla CSV
-tabla = pd.read_csv("tabla.csv", index_col=0)
+tabla = pd.read_csv("gramatica.csv", index_col=0)
 count = 0
 
 def analizador_sintactico(tokens_list):
@@ -44,7 +44,7 @@ def analizador_sintactico(tokens_list):
       stack = []
 
       # Inicializar la pila
-      symbol_E = NodeStack('E', None)
+      symbol_E = NodeStack('PROGRAMA', None)
       symbol_dollar = NodeStack('$', None)
       stack.append(symbol_dollar)
       stack.append(symbol_E)
@@ -65,6 +65,7 @@ def analizador_sintactico(tokens_list):
           else:
               try:
                   # Obtener la producción desde la tabla de análisis sintáctico
+
                   production = tabla.loc[top_of_stack.symbol, current_input["symbol"]]
               except KeyError:
                   print(f"Error sintáctico: No se encontró una regla para {top_of_stack.symbol} y {current_input['symbol']}")
@@ -76,18 +77,19 @@ def analizador_sintactico(tokens_list):
 
               # Reemplazar la producción en la pila
               stack.pop()
-              production_symbols = production.split()
-              production_symbols.reverse()
-              for symbol in production_symbols:
-                  if symbol != 'e':
-                      new_node = NodeStack(symbol, current_input["lexeme"])
-                      stack.append(new_node)
+              if production != '': 
+                production_symbols = production.split()
+                production_symbols.reverse()
+                for symbol in production_symbols:
+                    if symbol != 'e':
+                        new_node = NodeStack(symbol, current_input["lexeme"])
+                        stack.append(new_node)
 
-                      # Crear el nodo en el árbol sintáctico
-                      new_node_tree = NodeTree(new_node.id, new_node.symbol, new_node.lexeme)
-                      father = buscar_node(top_of_stack.id, root)
-                      father.children.append(new_node_tree)
-                      new_node_tree.father = father
+                        # Crear el nodo en el árbol sintáctico
+                        new_node_tree = NodeTree(new_node.id, new_node.symbol, new_node.lexeme)
+                        father = buscar_node(top_of_stack.id, root)
+                        father.children.append(new_node_tree)
+                        new_node_tree.father = father
 
       # Si la pila está vacía y la entrada también, la cadena es aceptada
       if not stack and not tokens_list:
@@ -118,7 +120,32 @@ def print_tree_dot(node):
           generate_dot(node, file)
           file.write("}\n")
 
+def sanitize_symbol(symbol):
+  # Reemplazar caracteres no válidos en el nombre del símbolo DOT
+  return symbol.replace("'", "_").replace('"', '_')
+def get_node_color(symbol):
+  # Define los colores para nodos terminales y no terminales
+  terminal_color = "lightcoral"
+  non_terminal_color = "lightblue"
+
+  # Verifica si el símbolo es un no terminal (puedes ajustar esto según tu gramática)
+  if symbol.isupper():
+      return non_terminal_color
+  else:
+      return terminal_color
+
 def generate_dot(node, file):
-      for child in node.children:
-          file.write(f'  {node.symbol}{node.id} -> {child.symbol}{child.id};\n')
-          generate_dot(child, file)
+  for child in node.children:
+      # Sanitizar los símbolos antes de escribirlos en el archivo DOT
+      node_symbol = sanitize_symbol(node.symbol)
+      child_symbol = sanitize_symbol(child.symbol)
+
+      # Determinar el color del nodo actual y del nodo hijo
+      node_color = get_node_color(node.symbol)
+      child_color = get_node_color(child.symbol)
+
+      file.write(f'  {node_symbol}{node.id} [label="{node_symbol}", color="{node_color}", style="filled"];\n')
+      file.write(f'  {child_symbol}{child.id} [label="{child_symbol}", color="{child_color}", style="filled"];\n')
+      file.write(f'  {node_symbol}{node.id} -> {child_symbol}{child.id};\n')
+
+      generate_dot(child, file)
