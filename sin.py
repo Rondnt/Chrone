@@ -167,7 +167,7 @@ def analizador_sintactico(tokens_list):
                     new_node_tree.father = father
 
                     if new_node.symbol == 'id':
-                        if production.split()[0] == 'TPVAR':
+                        if production.split()[0] == 'TPVAR': #si el tipo de variable es cadena 
                             symbol_table.declare_variable(tokens_list[0], data_type)
                         elif production.split()[0] == 'TPFUNC':
                             symbol_table.declare_function(tokens_list[0])
@@ -198,6 +198,7 @@ def analizador_sintactico(tokens_list):
   print_tree(root)
   print_tree_dot(root)
   print_tree_json(root)
+  
 
 # Función para inferir el tipo de dato de un símbolo
 def inferir_tipo_dato(node, lexeme, symbol_table):
@@ -206,6 +207,9 @@ def inferir_tipo_dato(node, lexeme, symbol_table):
       # El símbolo 'PROGRAMA' es un símbolo especial, no tiene un tipo asociado.
       return None
   elif node.symbol == 'tipoentero':
+      node.data_type = 'entero'
+      return 'entero'
+  elif node.symbol == 'E':
       node.data_type = 'entero'
       return 'entero'
   elif node.symbol == 'CADENA':
