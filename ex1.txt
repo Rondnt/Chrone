@@ -1,12 +1,6 @@
-principal() { 
-            entero a = 8;
-            entero b = 9;
-            entero resultado = suma(a,b);
-            retornar 0;
+principal(){ 
+            entero x;
+            entero y;
+            entero x=5;
+            entero y=x+10;
             }
-funcion entero suma (entero a, entero b) {
-            entero resultado = a + b;
-            retornar resultado;
-            }
-
-        
