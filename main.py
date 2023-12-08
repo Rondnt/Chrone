@@ -1,5 +1,9 @@
 from lexico import main as lexico_main
-from generacion import GeneradorCodigo
+#from generacionsuma import GeneradorCodigo
+#from generacionaritmeticos import GeneradorCodigo
+#from generacionifelse import GeneradorCodigo
+from generacionfuncion import GeneradorCodigo
+
 
 def main():
     # Ejecutar el analizador léxico
@@ -9,7 +13,11 @@ def main():
     generador = GeneradorCodigo(None)
 
     # Generar código y guardar en el archivo
-    generador.generar_codigo(output_file="codigo_generado.asm")
+    #generador.generar_codigo(output_file="generacion_suma.asm")
+    #generador.generar_codigo(output_file="generacion_aritmeticos.asm")
+    #generador.generar_codigo(output_file="generacion_ifelse.asm")
+    generador.generar_codigo(output_file="generacion_funcion.asm")
+
 
     # Finalmente, ejecutar el analizador semántico
     #semantico_main()
