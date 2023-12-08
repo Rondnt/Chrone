@@ -1,0 +1,9 @@
+principal() { 
+  entero a=10;
+  entero b=20;
+  si(a<b){
+    imprimir<<"a es menor que b";  
+  } sino {
+    imprimir<<"b es menor que a";
+  }    
+}
