@@ -5,7 +5,7 @@ class GeneradorCodigo:
         self.arbol_sintactico = arbol_sintactico
         self.codigo_generado = []
 
-    def generar_codigo(self, output_file="codigo_generado2.asm"):
+    def generar_codigo(self, output_file="generacion_ifelse.asm"):
         self.codigo_generado = []
         self._generar_encabezado()
         self._generar_declaraciones()
@@ -58,3 +58,4 @@ class GeneradorCodigo:
 
     def _generar_fin_programa(self):
         pass
+
