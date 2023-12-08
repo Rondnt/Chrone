@@ -33,10 +33,10 @@ T           -> TERM
 T           -> iparen E dparen
 
 TERM        -> id TERM_FUNC
-TERM        -> ENTERO
-TERM        -> BOOLEANO
-TERM        -> CADENA
-TERM        -> DECIMAL
+TERM        -> entero
+TERM        -> booleano
+TERM        -> cadena
+TERM        -> decimal
 TERM_FUNC   -> iparen PARAM_M dparen
 TERM_FUNC   -> ''
 OPER        -> suma
